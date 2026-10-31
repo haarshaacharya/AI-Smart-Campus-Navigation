@@ -1,0 +1,7 @@
+
+opencv-python==4.10.0.84
+SpeechRecognition==3.17.0
+sounddevice==0.5.6
+numpy==2.2.6
+pyserial==3.5
+pywin32
