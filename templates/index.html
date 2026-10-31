@@ -4,220 +4,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Campus | AI Navigation</title>
+<title>AI Smart Campus Navigation</title>
 
 <style>
 :root {
-    --bg: #f3f6fc;
-    --white: #ffffff;
-    --black: #111827;
     --blue: #2563eb;
     --green: #16a34a;
     --red: #ef4444;
     --yellow: #facc15;
+    --black: #111827;
     --muted: #64748b;
     --border: #e2e8f0;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-body {
+html, body {
     margin: 0;
+    width: 100%;
+    height: 100%;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: var(--bg);
+    background: #f3f6fc;
     color: var(--black);
 }
 
+body { overflow: hidden; }
+
 .app {
     display: grid;
-    grid-template-columns: 250px 1fr;
-    min-height: 100vh;
+    grid-template-columns: 230px minmax(0, 1fr);
+    height: 100vh;
 }
-
-/* SIDEBAR */
 
 .sidebar {
     background: #101827;
     color: white;
-    padding: 28px 20px;
+    padding: 22px 16px;
     display: flex;
     flex-direction: column;
 }
 
 .brand {
     display: flex;
-    gap: 12px;
     align-items: center;
-    margin-bottom: 42px;
+    gap: 10px;
+    margin-bottom: 32px;
 }
 
 .logo {
-    width: 46px;
-    height: 46px;
     background: var(--blue);
-    border-radius: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
     display: grid;
     place-items: center;
-    font-size: 25px;
+    font-size: 24px;
 }
 
-.brand strong {
-    font-size: 18px;
-}
+.brand strong { font-size: 16px; }
 
 .brand small {
-    color: #94a3b8;
     display: block;
-    margin-top: 3px;
+    color: #94a3b8;
+    margin-top: 4px;
 }
 
 .nav-item {
-    padding: 14px 16px;
-    border-radius: 12px;
+    width: 100%;
+    background: transparent;
+    border: 0;
     color: #cbd5e1;
-    margin-bottom: 8px;
+    text-align: left;
+    padding: 14px;
+    border-radius: 11px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
+.nav-item:hover { background: #1e293b; }
+
 .nav-item.active {
-    background: #2563eb;
+    background: var(--blue);
     color: white;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .sidebar-bottom {
     margin-top: auto;
-    padding: 18px;
+    padding: 15px;
     background: #1e293b;
     border-radius: 14px;
-    font-size: 13px;
+    font-size: 12px;
+    line-height: 1.6;
     color: #cbd5e1;
 }
 
-/* MAIN */
-
 .main {
-    padding: 32px;
-    max-width: 1650px;
-    width: 100%;
-    margin: auto;
+    padding: 18px 24px 12px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .topbar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 28px;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 12px;
 }
 
-.topbar h1 {
+h1 {
+    font-size: 27px;
     margin: 0;
-    font-size: 30px;
-    letter-spacing: -1px;
+    letter-spacing: -.7px;
 }
 
 .subtitle {
     color: var(--muted);
-    margin-top: 7px;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
 .live-pill {
     background: #dcfce7;
     color: #166534;
-    padding: 11px 18px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 12px;
 }
-
-.dot {
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    background: #22c55e;
-    border-radius: 50%;
-    margin-right: 7px;
-}
-
-/* STATUS CARDS */
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    margin-bottom: 22px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+    margin-bottom: 15px;
 }
 
 .card {
     background: white;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    box-shadow: 0 8px 30px rgba(15,23,42,.035);
+    border-radius: 18px;
+    padding: 17px;
+    min-width: 0;
+    min-height: 0;
+    box-shadow: 0 6px 22px rgba(15,23,42,.035);
 }
 
 .stat-label {
-    font-size: 13px;
     color: var(--muted);
-    margin-bottom: 13px;
+    font-size: 12px;
+    margin-bottom: 10px;
 }
 
 .stat-value {
-    font-size: 23px;
+    font-size: clamp(15px, 1.5vw, 21px);
     font-weight: 800;
+    overflow-wrap: anywhere;
 }
 
 .stat-icon {
-    font-size: 25px;
     float: right;
+    font-size: 22px;
 }
-
-.blue { color: var(--blue); }
-.green { color: var(--green); }
-.red { color: var(--red); }
-.yellow { color: #d97706; }
-
-/* CONTENT GRID */
 
 .content {
     display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(310px, 1fr);
-    gap: 22px;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) 175px;
+    gap: 15px;
+    flex: 1;
+    min-height: 0;
 }
 
 .section-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
-    margin: 0 0 6px;
+    margin: 0 0 5px;
 }
 
 .section-subtitle {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--muted);
-    margin: 0 0 20px;
+    margin: 0 0 12px;
 }
 
 .map-card {
     grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .map-container {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background:
         linear-gradient(rgba(37,99,235,.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(37,99,235,.035) 1px, transparent 1px),
         #f8fafc;
     background-size: 24px 24px;
     border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 18px;
+    border-radius: 15px;
+    padding: 8px;
 }
 
 .map-svg {
-    width: 100%;
-    height: auto;
     display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .route {
@@ -225,7 +228,6 @@ body {
     stroke: #cbd5e1;
     stroke-width: 12;
     stroke-linecap: round;
-    transition: stroke .3s;
 }
 
 .route.active {
@@ -237,12 +239,11 @@ body {
     fill: #94a3b8;
     stroke: white;
     stroke-width: 2;
-    transition: fill .3s;
 }
 
 .led.active {
-    fill: #facc15;
-    filter: drop-shadow(0 0 7px #eab308);
+    fill: var(--yellow);
+    filter: drop-shadow(0 0 6px #eab308);
 }
 
 .map-label {
@@ -254,173 +255,224 @@ body {
 .destination-controls {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 18px;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .destination-btn {
+    padding: 10px;
+    border-radius: 11px;
     border: 1px solid var(--border);
     background: white;
-    border-radius: 12px;
-    padding: 13px;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
-    transition: .2s;
 }
 
-.destination-btn:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    transform: translateY(-2px);
-}
-
+.destination-btn:hover,
 .destination-btn.selected {
-    background: #eff6ff;
     border-color: var(--blue);
+    background: #eff6ff;
     color: var(--blue);
 }
 
 .map-footer {
-    margin-top: 16px;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
     color: var(--muted);
-    font-size: 12px;
+    font-size: 10px;
 }
 
-/* CONVERSATION */
-
-.chat {
+.voice-card {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    min-height: 230px;
-    max-height: 330px;
-    overflow-y: auto;
+    overflow: hidden;
+}
+
+.chat {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow: hidden;
 }
 
 .message {
-    padding: 14px 16px;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.55;
+    padding: 11px 14px;
+    border-radius: 13px;
+    max-width: 90%;
+    font-size: 13px;
+    line-height: 1.5;
+    flex-shrink: 0;
 }
 
 .message small {
     display: block;
-    font-weight: 800;
-    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 10px;
+    margin-bottom: 4px;
 }
 
 .assistant {
     background: #eff6ff;
     color: #1e40af;
     align-self: flex-start;
-    max-width: 95%;
 }
 
 .visitor {
     background: #f1f5f9;
     color: #334155;
     align-self: flex-end;
-    max-width: 95%;
 }
 
 .answer {
     background: #dcfce7;
     color: #166534;
     align-self: flex-start;
-    max-width: 95%;
 }
 
-/* QR */
+.qr-section { overflow: hidden; }
 
 .qr-card {
     display: flex;
-    gap: 20px;
     align-items: center;
+    gap: 15px;
 }
 
-.qr-placeholder {
+.qr-image {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     flex-shrink: 0;
-    width: 115px;
-    height: 115px;
-    border: 2px dashed #94a3b8;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    background: #f8fafc;
-    font-size: 40px;
 }
+
+.qr-info strong { font-size: 13px; }
 
 .qr-info p {
+    font-size: 11px;
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
-/* FOOTER */
+.qr-info a {
+    font-size: 11px;
+    color: var(--blue);
+    overflow-wrap: anywhere;
+}
 
 .footer {
-    margin-top: 25px;
+    padding-top: 9px;
     text-align: center;
-    font-size: 12px;
     color: var(--muted);
+    font-size: 10px;
 }
 
-@media (max-width: 1150px) {
+/* SECTION FOCUS */
+
+.focused .content {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr);
+}
+
+.focused .content > .card {
+    display: none;
+}
+
+.focused[data-section="map"] .map-card,
+.focused[data-section="voice"] .voice-card,
+.focused[data-section="system"] .qr-section {
+    display: flex;
+    grid-row: auto;
+}
+
+.focused[data-section="voice"] .voice-card {
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.focused[data-section="system"] .qr-section {
+    flex-direction: column;
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.focused[data-section="system"] .qr-image {
+    width: 200px;
+    height: 200px;
+}
+
+.focused[data-section="system"] .qr-card {
+    margin-top: 25px;
+}
+
+.stop-btn {
+    border: 0;
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+@media (max-height: 750px) and (min-width: 901px) {
+    .main { padding-top: 12px; }
+    .topbar { margin-bottom: 10px; }
+    .stats { margin-bottom: 10px; }
+    .stats .card { padding: 12px; }
+    .content {
+        grid-template-rows: minmax(0, 1fr) 145px;
+        gap: 10px;
+    }
+    .card { padding: 12px; }
+    .section-subtitle { margin-bottom: 8px; }
+    .qr-image { width: 78px; height: 78px; }
+}
+
+@media (max-width: 900px) {
+    html, body {
+        height: auto;
+        overflow: auto;
+    }
+
+    .app {
+        display: block;
+        height: auto;
+    }
+
+    .sidebar { display: none; }
+
+    .main {
+        height: auto;
+        overflow: visible;
+        padding: 16px;
+    }
+
+    h1 { font-size: 22px; }
+
     .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .content {
-        grid-template-columns: 1fr;
-    }
-
-    .map-card {
-        grid-row: auto;
-    }
-}
-
-@media (max-width: 700px) {
-    .app {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        display: none;
-    }
-
-    .main {
-        padding: 18px;
-    }
-
-    .topbar {
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
     }
 
-    .topbar h1 {
-        font-size: 24px;
+    .map-container {
+        height: 350px;
+        flex: none;
     }
 
-    .stats {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .card {
-        padding: 15px;
-    }
-
-    .stat-value {
-        font-size: 17px;
-    }
-
-    .qr-card {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+    .voice-card { min-height: 250px; }
+    .qr-section { min-height: 170px; }
 }
 </style>
 </head>
@@ -429,209 +481,249 @@ body {
 
 <div class="app">
 
-    <aside class="sidebar">
-        <div class="brand">
-            <div class="logo">🧭</div>
-            <div>
-                <strong>SMART CAMPUS</strong>
-                <small>AI Navigation</small>
+<aside class="sidebar">
+    <div class="brand">
+        <div class="logo">🧭</div>
+        <div>
+            <strong>SMART CAMPUS</strong>
+            <small>AI Navigation</small>
+        </div>
+    </div>
+
+    <button class="nav-item active"
+            data-nav="dashboard"
+            onclick="showSection('dashboard')">
+        ▦ Dashboard
+    </button>
+
+    <button class="nav-item"
+            data-nav="map"
+            onclick="showSection('map')">
+        ◇ Campus Map
+    </button>
+
+    <button class="nav-item"
+            data-nav="voice"
+            onclick="showSection('voice')">
+        ◉ Voice Assistant
+    </button>
+
+    <button class="nav-item"
+            data-nav="system"
+            onclick="showSection('system')">
+        ▤ System Status & QR
+    </button>
+
+    <div class="sidebar-bottom">
+        <strong>ACCESSIBLE NAVIGATION</strong>
+        <p>Face Detection • Voice Guidance • Arduino LED Routes</p>
+        <span style="color:#4ade80;">● Exhibition Prototype</span>
+    </div>
+</aside>
+
+<main class="main" id="main">
+
+    <div class="topbar">
+        <div>
+            <h1>Campus Navigation Dashboard</h1>
+            <div class="subtitle">
+                Intelligent, accessible and interactive campus guidance
             </div>
         </div>
 
-        <div class="nav-item active">▦ Dashboard</div>
-        <div class="nav-item">◇ Campus Map</div>
-        <div class="nav-item">◉ Voice Assistant</div>
-        <div class="nav-item">▤ System Status</div>
-
-        <div class="sidebar-bottom">
-            <strong>ACCESSIBLE NAVIGATION</strong>
-            <p>Face Detection • Voice Guidance • Arduino LED Routes</p>
-            <span style="color:#4ade80;">● Exhibition Prototype</span>
+        <div class="live-pill">
+            ● <span id="system-status">Ready</span>
         </div>
-    </aside>
+    </div>
 
-    <main class="main">
+    <div class="stats">
 
-        <div class="topbar">
-            <div>
-                <h1>Campus Navigation Dashboard</h1>
-                <div class="subtitle">
-                    Intelligent, accessible and interactive campus guidance
-                </div>
-            </div>
-            <div class="live-pill">
-                <span class="dot"></span>
-                <span id="system-status">Ready</span>
-            </div>
+        <div class="card">
+            <div class="stat-icon" style="color:#2563eb;">◉</div>
+            <div class="stat-label">Face Detection</div>
+            <div class="stat-value" id="face-status">Waiting</div>
         </div>
 
-        <div class="stats">
-
-            <div class="card">
-                <div class="stat-icon blue">◉</div>
-                <div class="stat-label">Face Detection</div>
-                <div class="stat-value" id="face-status">Waiting</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-icon green">♫</div>
-                <div class="stat-label">Voice Assistant</div>
-                <div class="stat-value">Ready</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-icon yellow">⚡</div>
-                <div class="stat-label">Active LED Route</div>
-                <div class="stat-value" id="led-status">OFF</div>
-            </div>
-
-            <div class="card">
-                <div class="stat-icon red">⌖</div>
-                <div class="stat-label">Current Destination</div>
-                <div class="stat-value" id="destination-status">None</div>
-            </div>
-
+        <div class="card">
+            <div class="stat-icon" style="color:#16a34a;">♫</div>
+            <div class="stat-label">Voice Assistant</div>
+            <div class="stat-value">Ready</div>
         </div>
 
-        <div class="content">
-
-            <!-- CAMPUS MAP -->
-            <section class="card map-card">
-                <h2 class="section-title">Live 2D Campus Map</h2>
-                <p class="section-subtitle">
-                    Select a destination to preview the navigation route
-                </p>
-
-                <div class="map-container">
-                    <svg class="map-svg" viewBox="0 0 560 440">
-
-                        <!-- ROADS -->
-                        <path class="route" id="route-library"
-                              d="M280 220 V85"/>
-                        <path class="route" id="route-canteen"
-                              d="M280 220 H100"/>
-                        <path class="route" id="route-cse"
-                              d="M280 220 H460"/>
-                        <path class="route" id="route-washroom"
-                              d="M280 220 V355"/>
-
-                        <!-- BUILDINGS -->
-                        <rect x="195" y="20" width="170" height="65"
-                              rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-                        <text x="280" y="58" text-anchor="middle"
-                              class="map-label">📚 LIBRARY</text>
-
-                        <rect x="10" y="185" width="145" height="70"
-                              rx="14" fill="#fef9c3" stroke="#eab308" stroke-width="2"/>
-                        <text x="82" y="226" text-anchor="middle"
-                              class="map-label">🍽 CANTEEN</text>
-
-                        <rect x="405" y="185" width="145" height="70"
-                              rx="14" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
-                        <text x="477" y="226" text-anchor="middle"
-                              class="map-label">💻 CSE DEPT</text>
-
-                        <rect x="195" y="355" width="170" height="65"
-                              rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-                        <text x="280" y="394" text-anchor="middle"
-                              class="map-label">🚻 WASHROOM</text>
-
-                        <!-- LED INDICATORS -->
-                        <circle class="led" data-route="library" cx="280" cy="110" r="7"/>
-                        <circle class="led" data-route="library" cx="280" cy="145" r="7"/>
-                        <circle class="led" data-route="library" cx="280" cy="180" r="7"/>
-
-                        <circle class="led" data-route="canteen" cx="130" cy="220" r="7"/>
-                        <circle class="led" data-route="canteen" cx="175" cy="220" r="7"/>
-                        <circle class="led" data-route="canteen" cx="220" cy="220" r="7"/>
-
-                        <circle class="led" data-route="cse" cx="340" cy="220" r="7"/>
-                        <circle class="led" data-route="cse" cx="385" cy="220" r="7"/>
-                        <circle class="led" data-route="cse" cx="430" cy="220" r="7"/>
-
-                        <circle class="led" data-route="washroom" cx="280" cy="265" r="7"/>
-                        <circle class="led" data-route="washroom" cx="280" cy="300" r="7"/>
-                        <circle class="led" data-route="washroom" cx="280" cy="335" r="7"/>
-
-                        <!-- YOU ARE HERE -->
-                        <circle cx="280" cy="220" r="29" fill="#2563eb"
-                                stroke="white" stroke-width="5"/>
-                        <text x="280" y="216" text-anchor="middle"
-                              fill="white" font-size="11" font-weight="bold">YOU</text>
-                        <text x="280" y="230" text-anchor="middle"
-                              fill="white" font-size="9">ARE HERE</text>
-                    </svg>
-                </div>
-
-                <div class="destination-controls">
-                    <button class="destination-btn"
-                            onclick="selectRoute('library')">📚 Library</button>
-                    <button class="destination-btn"
-                            onclick="selectRoute('canteen')">🍽 Canteen</button>
-                    <button class="destination-btn"
-                            onclick="selectRoute('cse')">💻 CSE Department</button>
-                    <button class="destination-btn"
-                            onclick="selectRoute('washroom')">🚻 Washroom</button>
-                </div>
-
-                <div class="map-footer">
-                    <span>🟢 Green = Selected route</span>
-                    <span>🟡 Yellow = LED preview</span>
-                </div>
-            </section>
-
-            <!-- VOICE CONVERSATION -->
-            <section class="card">
-                <h2 class="section-title">AI Voice Assistant</h2>
-                <p class="section-subtitle">
-                    Conversation and navigation messages
-                </p>
-
-                <div class="chat" id="chat">
-                    <div class="message assistant">
-                        <small>🔊 SMART SIGNBOARD</small>
-                        <span id="assistant-message">
-                            Waiting for visitor...
-                        </span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- QR -->
-            <section class="card">
-                <h2 class="section-title">Mobile Navigation</h2>
-                <p class="section-subtitle">
-                    Scan to access campus map on your phone
-                </p>
-
-                <div class="qr-card">
-                    <div class="qr-placeholder">▦</div>
-                    <div class="qr-info">
-                        <strong>QR Code Coming Next</strong>
-                        <p>
-                            We will generate a real QR code
-                            linked to the mobile campus map.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
+        <div class="card">
+            <div class="stat-icon" style="color:#d97706;">⚡</div>
+            <div class="stat-label">Active LED Route</div>
+            <div class="stat-value" id="led-status">OFF</div>
         </div>
 
-        <div class="footer">
-            AI Smart Campus Navigation System • Accessible Campus Project
+        <div class="card">
+            <div class="stat-icon" style="color:#ef4444;">⌖</div>
+            <div class="stat-label">Current Destination</div>
+            <div class="stat-value" id="destination-status">None</div>
         </div>
 
-    </main>
+    </div>
+
+    <div class="content">
+
+        <section class="card map-card">
+            <h2 class="section-title">Live 2D Campus Map</h2>
+            <p class="section-subtitle">
+                Select a destination to activate the navigation route
+            </p>
+
+            <div class="map-container">
+                <svg class="map-svg"
+                     viewBox="0 0 560 440"
+                     preserveAspectRatio="xMidYMid meet">
+
+                    <path class="route" id="route-library"
+                          d="M280 220 V85"/>
+                    <path class="route" id="route-canteen"
+                          d="M280 220 H100"/>
+                    <path class="route" id="route-cse"
+                          d="M280 220 H460"/>
+                    <path class="route" id="route-washroom"
+                          d="M280 220 V355"/>
+
+                    <rect x="195" y="20" width="170" height="65"
+                          rx="14" fill="#dbeafe"
+                          stroke="#2563eb" stroke-width="2"/>
+                    <text x="280" y="58" text-anchor="middle"
+                          class="map-label">📚 LIBRARY</text>
+
+                    <rect x="10" y="185" width="145" height="70"
+                          rx="14" fill="#fef9c3"
+                          stroke="#eab308" stroke-width="2"/>
+                    <text x="82" y="226" text-anchor="middle"
+                          class="map-label">🍽 CANTEEN</text>
+
+                    <rect x="405" y="185" width="145" height="70"
+                          rx="14" fill="#fee2e2"
+                          stroke="#ef4444" stroke-width="2"/>
+                    <text x="477" y="226" text-anchor="middle"
+                          class="map-label">💻 CSE DEPT</text>
+
+                    <rect x="195" y="355" width="170" height="65"
+                          rx="14" fill="#dcfce7"
+                          stroke="#16a34a" stroke-width="2"/>
+                    <text x="280" y="394" text-anchor="middle"
+                          class="map-label">🚻 WASHROOM</text>
+
+                    <circle class="led" data-route="library" cx="280" cy="110" r="7"/>
+                    <circle class="led" data-route="library" cx="280" cy="145" r="7"/>
+                    <circle class="led" data-route="library" cx="280" cy="180" r="7"/>
+
+                    <circle class="led" data-route="canteen" cx="130" cy="220" r="7"/>
+                    <circle class="led" data-route="canteen" cx="175" cy="220" r="7"/>
+                    <circle class="led" data-route="canteen" cx="220" cy="220" r="7"/>
+
+                    <circle class="led" data-route="cse" cx="340" cy="220" r="7"/>
+                    <circle class="led" data-route="cse" cx="385" cy="220" r="7"/>
+                    <circle class="led" data-route="cse" cx="430" cy="220" r="7"/>
+
+                    <circle class="led" data-route="washroom" cx="280" cy="265" r="7"/>
+                    <circle class="led" data-route="washroom" cx="280" cy="300" r="7"/>
+                    <circle class="led" data-route="washroom" cx="280" cy="335" r="7"/>
+
+                    <circle cx="280" cy="220" r="29"
+                            fill="#2563eb" stroke="white" stroke-width="5"/>
+                    <text x="280" y="216" text-anchor="middle"
+                          fill="white" font-size="11" font-weight="bold">YOU</text>
+                    <text x="280" y="230" text-anchor="middle"
+                          fill="white" font-size="9">ARE HERE</text>
+                </svg>
+            </div>
+
+            <div class="destination-controls">
+                <button class="destination-btn"
+                        onclick="selectRoute('library')">📚 Library</button>
+                <button class="destination-btn"
+                        onclick="selectRoute('canteen')">🍽 Canteen</button>
+                <button class="destination-btn"
+                        onclick="selectRoute('cse')">💻 CSE Department</button>
+                <button class="destination-btn"
+                        onclick="selectRoute('washroom')">🚻 Washroom</button>
+            </div>
+
+            <div class="map-footer">
+                <span>🟢 Green = Selected route</span>
+                <span>🟡 Yellow = Digital LED indicators</span>
+            </div>
+        </section>
+
+        <section class="card voice-card">
+            <h2 class="section-title">AI Voice Assistant</h2>
+            <p class="section-subtitle">
+                Conversation and navigation messages
+            </p>
+
+            <div class="chat" id="chat">
+                <div class="message assistant">
+                    <small>🔊 SMART SIGNBOARD</small>
+                    Waiting for visitor...
+                </div>
+            </div>
+        </section>
+
+        <section class="card qr-section">
+            <h2 class="section-title">Mobile Navigation</h2>
+            <p class="section-subtitle">
+                Scan this QR code using your phone
+            </p>
+
+            <div class="qr-card">
+                <img class="qr-image"
+                     src="/qr"
+                     alt="QR code for mobile campus navigation">
+
+                <div class="qr-info">
+                    <strong>Scan to Open Campus Map</strong>
+                    <p>
+                        Phone and laptop must be connected
+                        to the same Wi-Fi network.
+                    </p>
+                    <a href="{{ mobile_url }}" target="_blank">
+                        {{ mobile_url }}
+                    </a>
+                </div>
+            </div>
+
+            <button class="stop-btn" onclick="stopNavigation()">
+                ■ STOP NAVIGATION
+            </button>
+        </section>
+
+    </div>
+
+    <div class="footer">
+        AI Smart Campus Navigation System • Accessible Campus Project
+    </div>
+
+</main>
 </div>
 
 <script>
-const directions = {
-    library: "Library is straight ahead.",
-    canteen: "Canteen is on your left.",
-    cse: "CSE Department is on your right.",
-    washroom: "Washroom is behind you."
-};
+let currentRoute = null;
+
+function showSection(section) {
+    const main = document.getElementById("main");
+
+    main.classList.remove("focused");
+    main.removeAttribute("data-section");
+
+    if (section !== "dashboard") {
+        main.classList.add("focused");
+        main.setAttribute("data-section", section);
+    }
+
+    document.querySelectorAll(".nav-item").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.nav === section
+        );
+    });
+}
 
 function addMessage(role, text) {
     const chat = document.getElementById("chat");
@@ -650,70 +742,126 @@ function addMessage(role, text) {
     message.appendChild(content);
     chat.appendChild(message);
 
-    chat.scrollTop = chat.scrollHeight;
+    // Keep recent messages without a scrollbar.
+    while (chat.children.length > 3) {
+        chat.removeChild(chat.firstElementChild);
+    }
 }
 
-function selectRoute(route) {
-    document.querySelectorAll(".route").forEach(element => {
-        element.classList.remove("active");
+function renderRoute(route) {
+    document.querySelectorAll(".route").forEach(el => {
+        el.classList.remove("active");
     });
 
-    document.querySelectorAll(".led").forEach(element => {
-        element.classList.remove("active");
+    document.querySelectorAll(".led").forEach(el => {
+        el.classList.remove("active");
     });
 
-    document.querySelectorAll(".destination-btn").forEach(element => {
-        element.classList.remove("selected");
+    document.querySelectorAll(".destination-btn").forEach(el => {
+        el.classList.remove("selected");
     });
 
-    document.getElementById("route-" + route)
-        .classList.add("active");
+    if (!route) return;
+
+    const path = document.getElementById("route-" + route);
+    if (path) path.classList.add("active");
 
     document.querySelectorAll(
         '.led[data-route="' + route + '"]'
-    ).forEach(element => {
-        element.classList.add("active");
-    });
+    ).forEach(el => el.classList.add("active"));
 
-    const names = {
-        library: "Library",
-        canteen: "Canteen",
-        cse: "CSE Department",
-        washroom: "Washroom"
-    };
-
-    document.getElementById("destination-status")
-        .textContent = names[route];
-
-    document.getElementById("led-status")
-        .textContent = "PREVIEW ON";
-
-    addMessage("visitor", names[route]);
-    addMessage("answer", directions[route]);
-
-    const buttons = document.querySelectorAll(".destination-btn");
     const order = ["library", "canteen", "cse", "washroom"];
     const index = order.indexOf(route);
 
     if (index >= 0) {
-        buttons[index].classList.add("selected");
+        document.querySelectorAll(".destination-btn")[index]
+            .classList.add("selected");
     }
 }
 
-// Fetch backend status
+async function selectRoute(route) {
+    try {
+        const response = await fetch("/api/navigate", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({destination: route})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            alert(data.error || "Navigation failed");
+            return;
+        }
+
+        currentRoute = data.active_route;
+        renderRoute(currentRoute);
+
+        document.getElementById("destination-status")
+            .textContent = data.destination || "None";
+
+        document.getElementById("led-status")
+            .textContent = data.led_status || "OFF";
+
+        addMessage("visitor", data.destination);
+        addMessage("answer", data.direction);
+
+    } catch (error) {
+        alert("Cannot connect to Python server.");
+        console.error(error);
+    }
+}
+
+async function stopNavigation() {
+    try {
+        const response = await fetch("/api/stop", {
+            method: "POST"
+        });
+
+        if (!response.ok) throw new Error("Stop failed");
+
+        currentRoute = null;
+        renderRoute(null);
+
+        document.getElementById("destination-status")
+            .textContent = "None";
+
+        document.getElementById("led-status")
+            .textContent = "OFF";
+
+        addMessage("answer", "Navigation stopped.");
+
+    } catch (error) {
+        alert("Cannot stop navigation.");
+    }
+}
+
 async function updateDashboard() {
     try {
         const response = await fetch("/api/status");
+
+        if (!response.ok) throw new Error("Server error");
+
         const data = await response.json();
 
         document.getElementById("system-status")
-            .textContent = data.status;
+            .textContent = data.status || "Ready";
 
         document.getElementById("face-status")
             .textContent = data.face_detected
                 ? "Detected" : "Waiting";
 
-        // Live hardware synchronization will be added next.
+        document.getElementById("destination-status")
+            .textContent = data.destination || "None";
+
+        document.getElementById("led-status")
+            .textContent = data.led_status || "OFF";
+
+        if (data.active_route !== currentRoute) {
+            currentRoute = data.active_route || null;
+            renderRoute(currentRoute);
+        }
+
     } catch (error) {
         document.getElementById("system-status")
             .textContent = "Disconnected";
