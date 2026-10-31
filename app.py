@@ -11,6 +11,7 @@ import socket
 
 app = Flask(__name__)
 
+# Find laptop's Wi-Fi/LAN IP for the mobile QR code
 def get_local_ip():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -21,9 +22,11 @@ def get_local_ip():
     finally:
         sock.close()
 
+
 LOCAL_IP = get_local_ip()
 MOBILE_URL = f"http://{LOCAL_IP}:5000/mobile"
 
+# Arduino connection
 try:
     arduino = serial.Serial("COM3", 9600, timeout=1)
     time.sleep(2)
@@ -32,6 +35,7 @@ except serial.SerialException as error:
     arduino = None
     print("Arduino connection failed:", error)
 
+# Laptop dashboard state only
 system_state = {
     "status": "Ready",
     "face_detected": False,
@@ -96,35 +100,46 @@ def update_arduino(route):
         return "DISCONNECTED"
 
 
+# Main laptop dashboard
 @app.route("/")
 def home():
-    return render_template("index.html", mobile_url=MOBILE_URL)
-
-
-@app.route("/mobile")
-def mobile():
     return render_template(
         "index.html",
-        mobile_url=MOBILE_URL,
-        mobile_view=True
+        mobile_url=MOBILE_URL
     )
 
 
+# Independent mobile navigation page
+@app.route("/mobile")
+def mobile():
+    return render_template("mobile.html")
+
+
+# QR code always opens the independent mobile page
 @app.route("/qr")
 def qr():
     image = qrcode.make(MOBILE_URL)
+
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
     buffer.seek(0)
-    return send_file(buffer, mimetype="image/png")
+
+    return send_file(
+        buffer,
+        mimetype="image/png",
+        max_age=0
+    )
 
 
+# Laptop state only
 @app.route("/api/status")
 def status():
     with state_lock:
         return jsonify(dict(system_state))
 
 
+# Only laptop dashboard uses this API.
+# Mobile.html does not call it.
 @app.route("/api/navigate", methods=["POST"])
 def navigate():
     data = request.get_json(silent=True) or {}
@@ -154,7 +169,13 @@ def navigate():
         daemon=True
     ).start()
 
-    return jsonify({"success": True, **result})
+    print("Laptop destination:", destination["name"])
+    print("Arduino LED:", led_status)
+
+    return jsonify({
+        "success": True,
+        **result
+    })
 
 
 @app.route("/api/stop", methods=["POST"])
@@ -172,15 +193,18 @@ def stop():
         })
         result = dict(system_state)
 
-    return jsonify({"success": True, **result})
+    return jsonify({
+        "success": True,
+        **result
+    })
 
 
 if __name__ == "__main__":
-    print("=" * 45)
-    print("AI SMART CAMPUS WEB DASHBOARD")
-    print("Laptop: http://127.0.0.1:5000")
-    print("Mobile:", MOBILE_URL)
-    print("=" * 45)
+    print("=" * 50)
+    print("AI SMART CAMPUS NAVIGATION")
+    print("Laptop Dashboard: http://127.0.0.1:5000")
+    print("Mobile Navigation:", MOBILE_URL)
+    print("=" * 50)
 
     try:
         app.run(

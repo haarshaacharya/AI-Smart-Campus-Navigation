@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+
+<title>Smart Campus | Personal Navigation</title>
+
+<style>
+:root {
+    --blue: #2563eb;
+    --green: #16a34a;
+    --red: #ef4444;
+    --yellow: #facc15;
+    --dark: #101827;
+    --text: #111827;
+    --muted: #64748b;
+    --border: #e2e8f0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    background: #f3f6fc;
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+button {
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* NAVBAR */
+
+.navbar {
+    background: var(--dark);
+    color: white;
+    padding: 16px;
+    border-radius: 0 0 18px 18px;
+}
+
+.nav-inner {
+    max-width: 650px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.logo {
+    width: 43px;
+    height: 43px;
+    background: var(--blue);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    flex-shrink: 0;
+}
+
+.brand-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.3px;
+}
+
+.brand-subtitle {
+    color: #94a3b8;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+/* MAIN */
+
+.container {
+    width: min(100%, 650px);
+    margin: auto;
+    padding: 13px 12px 28px;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 5px 20px rgba(15,23,42,.035);
+}
+
+/* WELCOME SECTION */
+
+.welcome-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 17px 15px;
+    border-left: 4px solid var(--blue);
+}
+
+.welcome-title {
+    font-size: clamp(18px, 5vw, 23px);
+    font-weight: 800;
+    margin: 0 0 6px;
+    letter-spacing: -.5px;
+}
+
+.welcome-text {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.personal-badge {
+    background: #dcfce7;
+    color: #166534;
+    padding: 9px 11px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* SECTION */
+
+.section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.section-hint {
+    color: var(--muted);
+    font-size: 10px;
+    text-align: right;
+}
+
+/* CAMPUS MAP */
+
+.map {
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(37,99,235,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,.04) 1px, transparent 1px),
+        #f8fafc;
+    background-size: 19px 19px;
+    padding: 5px;
+}
+
+.map svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 290px;
+}
+
+.route {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke .2s;
+}
+
+.route.active {
+    stroke: #16a34a;
+    filter: drop-shadow(0 0 5px #22c55e);
+}
+
+.led {
+    fill: #94a3b8;
+    stroke: white;
+    stroke-width: 2;
+}
+
+.led.active {
+    fill: var(--yellow);
+    filter: drop-shadow(0 0 6px #eab308);
+}
+
+.map-label {
+    fill: #111827;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.map-legend {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 9px;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+/* DESTINATION BUTTONS */
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.destination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text);
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+}
+
+.destination-btn .emoji {
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.destination-btn.selected {
+    background: #eff6ff;
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+.destination-btn:active {
+    transform: scale(.98);
+}
+
+/* DIRECTIONS */
+
+.directions {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 13px;
+    padding: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.directions.active {
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.direction-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: var(--blue);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.directions.active .direction-icon {
+    background: #bbf7d0;
+    color: #166534;
+}
+
+.direction-title {
+    font-size: 13px;
+    font-weight: 800;
+    margin: 0 0 4px;
+}
+
+.direction-text {
+    margin: 0;
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.reset-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 11px;
+    border-radius: 11px;
+    border: 1px solid #fecaca;
+    background: #fff1f2;
+    color: #b91c1c;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 10px;
+    padding: 3px 0 12px;
+    line-height: 1.5;
+}
+
+/* SMALL SCREENS */
+
+@media (max-width: 360px) {
+    .container {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .card {
+        padding: 11px;
+    }
+
+    .welcome-card {
+        align-items: flex-start;
+    }
+
+    .welcome-title {
+        font-size: 17px;
+    }
+
+    .personal-badge {
+        font-size: 9px;
+        padding: 7px;
+    }
+
+    .destination-btn {
+        font-size: 11px;
+        padding: 10px 7px;
+    }
+
+    .map svg {
+        max-height: 245px;
+    }
+}
+
+@media (min-width: 700px) {
+    .container {
+        padding-top: 20px;
+    }
+
+    .map svg {
+        max-height: 370px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR ONLY -->
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="logo">🧭</div>
+
+        <div>
+            <div class="brand-name">SMART CAMPUS</div>
+            <div class="brand-subtitle">Personal Navigation</div>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- SEPARATE WELCOME CARD -->
+
+    <section class="card welcome-card">
+        <div>
+            <h1 class="welcome-title">
+                Where do you want to go?
+            </h1>
+
+            <p class="welcome-text">
+                Choose a destination and follow your route.
+            </p>
+        </div>
+
+        <div class="personal-badge">
+            ● MY MAP
+        </div>
+    </section>
+
+    <!-- CAMPUS MAP -->
+
+    <section class="card">
+        <div class="section-head">
+            <h2 class="section-title">🗺️ Campus Map</h2>
+            <span class="section-hint">You are at the center</span>
+        </div>
+
+        <div class="map">
+            <svg viewBox="0 0 560 440"
+                 role="img"
+                 aria-label="Campus map with Library, Canteen, CSE Department and Washroom">
+
+                <path class="route" id="route-library"
+                      d="M280 220 V85"/>
+
+                <path class="route" id="route-canteen"
+                      d="M280 220 H100"/>
+
+                <path class="route" id="route-cse"
+                      d="M280 220 H460"/>
+
+                <path class="route" id="route-washroom"
+                      d="M280 220 V355"/>
+
+                <!-- LIBRARY -->
+
+                <rect x="195" y="20" width="170" height="65"
+                      rx="14" fill="#dbeafe"
+                      stroke="#2563eb" stroke-width="2"/>
+
+                <text x="280" y="58"
+                      text-anchor="middle"
+                      class="map-label">LIBRARY</text>
+
+                <!-- CANTEEN -->
+
+                <rect x="10" y="185" width="145" height="70"
+                      rx="14" fill="#fef9c3"
+                      stroke="#eab308" stroke-width="2"/>
+
+                <text x="82" y="226"
+                      text-anchor="middle"
+                      class="map-label">CANTEEN</text>
+
+                <!-- CSE -->
+
+                <rect x="405" y="185" width="145" height="70"
+                      rx="14" fill="#fee2e2"
+                      stroke="#ef4444" stroke-width="2"/>
+
+                <text x="477" y="226"
+                      text-anchor="middle"
+                      class="map-label">CSE DEPT</text>
+
+                <!-- WASHROOM -->
+
+                <rect x="195" y="355" width="170" height="65"
+                      rx="14" fill="#dcfce7"
+                      stroke="#16a34a" stroke-width="2"/>
+
+                <text x="280" y="394"
+                      text-anchor="middle"
+                      class="map-label">WASHROOM</text>
+
+                <!-- DIGITAL ROUTE INDICATORS -->
+
+                <circle class="led" data-route="library"
+                        cx="280" cy="110" r="7"/>
+                <circle class="led" data-route="library"
+                        cx="280" cy="145" r="7"/>
+                <circle class="led" data-route="library"
+                        cx="280" cy="180" r="7"/>
+
+                <circle class="led" data-route="canteen"
+                        cx="130" cy="220" r="7"/>
+                <circle class="led" data-route="canteen"
+                        cx="175" cy="220" r="7"/>
+                <circle class="led" data-route="canteen"
+                        cx="220" cy="220" r="7"/>
+
+                <circle class="led" data-route="cse"
+                        cx="340" cy="220" r="7"/>
+                <circle class="led" data-route="cse"
+                        cx="385" cy="220" r="7"/>
+                <circle class="led" data-route="cse"
+                        cx="430" cy="220" r="7"/>
+
+                <circle class="led" data-route="washroom"
+                        cx="280" cy="265" r="7"/>
+                <circle class="led" data-route="washroom"
+                        cx="280" cy="300" r="7"/>
+                <circle class="led" data-route="washroom"
+                        cx="280" cy="335" r="7"/>
+
+                <!-- YOU ARE HERE -->
+
+                <circle cx="280" cy="220" r="29"
+                        fill="#2563eb"
+                        stroke="white" stroke-width="5"/>
+
+                <text x="280" y="216"
+                      text-anchor="middle"
+                      fill="white"
+                      font-size="11"
+                      font-weight="bold">YOU</text>
+
+                <text x="280" y="230"
+                      text-anchor="middle"
+                      fill="white"
+                      font-size="9">ARE HERE</text>
+
+            </svg>
+        </div>
+
+        <div class="map-legend">
+            <span>
+                <i class="legend-dot"
+                   style="background:#16a34a;"></i>
+                Selected route
+            </span>
+
+            <span>
+                <i class="legend-dot"
+                   style="background:#facc15;"></i>
+                Route indicators
+            </span>
+        </div>
+    </section>
+
+    <!-- DESTINATION SELECTION -->
+
+    <section class="card">
+        <div class="section-head">
+            <h2 class="section-title">Choose Destination</h2>
+            <span class="section-hint">Tap to navigate</span>
+        </div>
+
+        <div class="buttons">
+            <button class="destination-btn"
+                    data-route="library"
+                    onclick="selectDestination('library')">
+                <span class="emoji">📚</span>
+                Library
+            </button>
+
+            <button class="destination-btn"
+                    data-route="canteen"
+                    onclick="selectDestination('canteen')">
+                <span class="emoji">🍽️</span>
+                Canteen
+            </button>
+
+            <button class="destination-btn"
+                    data-route="cse"
+                    onclick="selectDestination('cse')">
+                <span class="emoji">💻</span>
+                CSE Department
+            </button>
+
+            <button class="destination-btn"
+                    data-route="washroom"
+                    onclick="selectDestination('washroom')">
+                <span class="emoji">🚻</span>
+                Washroom
+            </button>
+        </div>
+    </section>
+
+    <!-- PERSONAL DIRECTIONS -->
+
+    <section class="card">
+        <div class="section-head">
+            <h2 class="section-title">Your Directions</h2>
+            <span class="section-hint">Personal guidance</span>
+        </div>
+
+        <div class="directions" id="direction-box">
+            <div class="direction-icon">➤</div>
+
+            <div>
+                <div class="direction-title"
+                     id="destination-name">
+                    No destination selected
+                </div>
+
+                <p class="direction-text"
+                   id="direction-text">
+                    Select a destination above to see your route.
+                </p>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetNavigation()">
+            ✕ Clear My Route
+        </button>
+    </section>
+
+    <div class="footer">
+        AI Smart Campus Navigation
+        <br>
+        Your route is independent from other visitors.
+    </div>
+
+</main>
+
+<script>
+const destinations = {
+    library: {
+        name: "📚 Library",
+        direction: "Go straight ahead to reach the Library."
+    },
+
+    canteen: {
+        name: "🍽️ Canteen",
+        direction: "Turn left to reach the Canteen."
+    },
+
+    cse: {
+        name: "💻 CSE Department",
+        direction: "Turn right to reach the CSE Department."
+    },
+
+    washroom: {
+        name: "🚻 Washroom",
+        direction: "Go behind your starting point to reach the Washroom."
+    }
+};
+
+function selectDestination(route) {
+    const destination = destinations[route];
+
+    if (!destination) return;
+
+    document.querySelectorAll(".route").forEach(el => {
+        el.classList.remove("active");
+    });
+
+    document.querySelectorAll(".led").forEach(el => {
+        el.classList.remove("active");
+    });
+
+    document.querySelectorAll(".destination-btn").forEach(el => {
+        el.classList.remove("selected");
+    });
+
+    document.getElementById("route-" + route)
+        .classList.add("active");
+
+    document.querySelectorAll(
+        '.led[data-route="' + route + '"]'
+    ).forEach(el => {
+        el.classList.add("active");
+    });
+
+    document.querySelector(
+        '.destination-btn[data-route="' + route + '"]'
+    ).classList.add("selected");
+
+    document.getElementById("destination-name")
+        .textContent = destination.name;
+
+    document.getElementById("direction-text")
+        .textContent = destination.direction;
+
+    document.getElementById("direction-box")
+        .classList.add("active");
+}
+
+function resetNavigation() {
+    document.querySelectorAll(".route").forEach(el => {
+        el.classList.remove("active");
+    });
+
+    document.querySelectorAll(".led").forEach(el => {
+        el.classList.remove("active");
+    });
+
+    document.querySelectorAll(".destination-btn").forEach(el => {
+        el.classList.remove("selected");
+    });
+
+    document.getElementById("destination-name")
+        .textContent = "No destination selected";
+
+    document.getElementById("direction-text")
+        .textContent =
+            "Select a destination above to see your route.";
+
+    document.getElementById("direction-box")
+        .classList.remove("active");
+}
+</script>
+
+</body>
+</html>
