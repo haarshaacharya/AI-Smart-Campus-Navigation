@@ -26,8 +26,6 @@ Instead of searching for directions manually, visitors can use an AI-powered sig
 - 👥 **Independent Multi-User Navigation** — Each phone can select its own destination without changing another visitor's route.
 - 🎨 **Color-Coded Routes** — Green route highlighting with yellow digital LED indicators.
 
-> **Development status:** Face detection and microphone-based voice recognition work in the standalone Python prototype. They are not yet integrated into the Flask dashboard. Additional physical LED routes are planned.
-
 ---
 
 ## 📍 Available Destinations
