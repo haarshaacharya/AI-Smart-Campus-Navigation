@@ -11,13 +11,6 @@ An AI-based accessible campus navigation prototype using face detection, voice r
 - Arduino LED indication
 - STOP / EXIT button
 
-## Supported Destinations
-
-- Library — Straight ahead
-- Canteen — Left
-- CSE Department — Right
-- Washroom — Behind
-
 ## Technologies Used
 
 - Python
