@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Smart Campus Navigation</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: white;
+            text-align: center;
+        }
+
+        header {
+            background: #17263d;
+            padding: 25px;
+        }
+
+        h1 {
+            color: #5eead4;
+        }
+
+        .card {
+            background: #1e293b;
+            margin: 25px auto;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 650px;
+        }
+
+        .status {
+            color: #4ade80;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>AI SMART CAMPUS NAVIGATION</h1>
+        <p>Accessible Campus Guidance System</p>
+    </header>
+
+    <div class="card">
+        <h2>System Status</h2>
+        <p class="status" id="status">Loading...</p>
+    </div>
+
+    <div class="card">
+        <h2>AI Voice Assistant</h2>
+        <p id="message">Waiting for system...</p>
+    </div>
+
+    <div class="card">
+        <h2>Destination</h2>
+        <p id="destination">Not selected</p>
+        <p id="direction">Waiting for visitor</p>
+    </div>
+
+    <script>
+        async function updateDashboard() {
+            try {
+                const response = await fetch("/api/status");
+                const data = await response.json();
+
+                document.getElementById("status").textContent =
+                    data.status;
+
+                document.getElementById("message").textContent =
+                    data.message;
+
+                document.getElementById("destination").textContent =
+                    data.destination || "Not selected";
+
+                document.getElementById("direction").textContent =
+                    data.direction;
+
+            } catch (error) {
+                document.getElementById("status").textContent =
+                    "Disconnected";
+            }
+        }
+
+        updateDashboard();
+        setInterval(updateDashboard, 1000);
+    </script>
+
+</body>
+</html>
