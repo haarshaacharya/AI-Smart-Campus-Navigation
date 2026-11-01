@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, render_template, request, send_file
 import serial
 import time
@@ -11,7 +10,7 @@ import socket
 
 app = Flask(__name__)
 
-# Find laptop's Wi-Fi/LAN IP for the mobile QR code
+
 def get_local_ip():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
@@ -26,16 +25,21 @@ def get_local_ip():
 LOCAL_IP = get_local_ip()
 MOBILE_URL = f"http://{LOCAL_IP}:5000/mobile"
 
+
 # Arduino connection
 try:
     arduino = serial.Serial("COM3", 9600, timeout=1)
     time.sleep(2)
+
+    # Starting mein all LEDs OFF
+    arduino.write(b"0")
     print("Arduino connected successfully!")
+
 except serial.SerialException as error:
     arduino = None
     print("Arduino connection failed:", error)
 
-# Laptop dashboard state only
+
 system_state = {
     "status": "Ready",
     "face_detected": False,
@@ -46,24 +50,26 @@ system_state = {
     "led_status": "OFF"
 }
 
+
 destinations = {
     "library": {
         "name": "Library",
-        "direction": "Library is straight ahead."
+        "direction": "You selected Library. The Library is straight ahead."
     },
     "canteen": {
         "name": "Canteen",
-        "direction": "Canteen is on your left."
+        "direction": "You selected Canteen. The Canteen is on your left."
     },
     "cse": {
         "name": "CSE Department",
-        "direction": "C S E Department is on your right."
+        "direction": "You selected CSE Department. It is on your right."
     },
     "washroom": {
         "name": "Washroom",
-        "direction": "Washroom is behind you."
+        "direction": "You selected Washroom. It is behind you."
     }
 }
+
 
 voice_lock = threading.Lock()
 arduino_lock = threading.Lock()
@@ -89,18 +95,25 @@ def update_arduino(route):
 
     try:
         with arduino_lock:
+            if not arduino.is_open:
+                return "DISCONNECTED"
+
             if route == "library":
                 arduino.write(b"L")
+                print("Library LEDs ON")
                 return "ON"
+
             else:
-                arduino.write(b"O")
+                # Arduino code expects digit zero, not capital O
+                arduino.write(b"0")
+                print("All LEDs OFF")
                 return "OFF"
+
     except serial.SerialException as error:
         print("Arduino error:", error)
         return "DISCONNECTED"
 
 
-# Main laptop dashboard
 @app.route("/")
 def home():
     return render_template(
@@ -109,13 +122,11 @@ def home():
     )
 
 
-# Independent mobile navigation page
 @app.route("/mobile")
 def mobile():
     return render_template("mobile.html")
 
 
-# QR code always opens the independent mobile page
 @app.route("/qr")
 def qr():
     image = qrcode.make(MOBILE_URL)
@@ -131,15 +142,12 @@ def qr():
     )
 
 
-# Laptop state only
 @app.route("/api/status")
 def status():
     with state_lock:
         return jsonify(dict(system_state))
 
 
-# Only laptop dashboard uses this API.
-# Mobile.html does not call it.
 @app.route("/api/navigate", methods=["POST"])
 def navigate():
     data = request.get_json(silent=True) or {}
@@ -152,6 +160,7 @@ def navigate():
         }), 400
 
     destination = destinations[route]
+
     led_status = update_arduino(route)
 
     with state_lock:
@@ -161,6 +170,7 @@ def navigate():
         system_state["active_route"] = route
         system_state["message"] = destination["direction"]
         system_state["led_status"] = led_status
+
         result = dict(system_state)
 
     threading.Thread(
@@ -169,8 +179,8 @@ def navigate():
         daemon=True
     ).start()
 
-    print("Laptop destination:", destination["name"])
-    print("Arduino LED:", led_status)
+    print("Selected destination:", destination["name"])
+    print("LED status:", led_status)
 
     return jsonify({
         "success": True,
@@ -191,6 +201,7 @@ def stop():
             "message": "Navigation stopped",
             "led_status": led_status
         })
+
         result = dict(system_state)
 
     return jsonify({
@@ -213,10 +224,12 @@ if __name__ == "__main__":
             debug=False,
             threaded=True
         )
+
     finally:
         if arduino is not None:
             try:
-                arduino.write(b"O")
-                arduino.close()
+                with arduino_lock:
+                    arduino.write(b"0")
+                    arduino.close()
             except serial.SerialException:
                 pass
