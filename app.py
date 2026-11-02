@@ -1,3 +1,4 @@
+
 from flask import Flask, jsonify, render_template, request, send_file
 import serial
 import time
@@ -33,6 +34,8 @@ try:
 
     # Starting mein all LEDs OFF
     arduino.write(b"0")
+    arduino.flush()
+
     print("Arduino connected successfully!")
 
 except serial.SerialException as error:
@@ -89,23 +92,36 @@ def speak(message):
             pythoncom.CoUninitialize()
 
 
+# Arduino LED control for all four locations
 def update_arduino(route):
+
+    commands = {
+        "library": b"L",
+        "cse": b"C",
+        "washroom": b"W",
+        "canteen": b"A"
+    }
+
     if arduino is None:
         return "DISCONNECTED"
 
     try:
         with arduino_lock:
+
             if not arduino.is_open:
                 return "DISCONNECTED"
 
-            if route == "library":
-                arduino.write(b"L")
-                print("Library LEDs ON")
+            if route in commands:
+                arduino.write(commands[route])
+                arduino.flush()
+
+                print(f"{route.upper()} LEDs ON")
                 return "ON"
 
             else:
-                # Arduino code expects digit zero, not capital O
                 arduino.write(b"0")
+                arduino.flush()
+
                 print("All LEDs OFF")
                 return "OFF"
 
